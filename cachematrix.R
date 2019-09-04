@@ -1,52 +1,33 @@
-## Put comments here that give an overall description of what your
-## functions do
+## Caching inverse matrix
 
-## Write a short comment describing this function
+## Create matrix object
 
 makeCacheMatrix <- function(x = matrix()) {
         i <- NULL
-        set <-
-}
-
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-}
-
-
-makeVector <- function(x = numeric()) {
-        m <- NULL
-        set <- function(y) {
-                x <<- y
-                m <<- NULL
-        }
         get <- function() x
-        setmean <- function(mean) m <<- mean
-        getmean <- function() m
-        list(set = set, get = get,
-             setmean = setmean,
-             getmean = getmean)
+        setinverse <- function(inverse) i <<- inverse
+        getinverse <- function() i
+        list(get = get,
+             setinverse = setinverse,
+             getinverse = getinverse)
 }
 
+## Retrieve inverse from cache if available
 
-cachemean <- function(x, ...) {
-        m <- x$getmean()
-        if(!is.null(m)) {
+cacheSolve <- function (x) {
+        ## Return a matrix that is the inverse of 'x'
+        i <- x$getinverse()
+        if(!is.null(i)) {
                 message("getting cached data")
-                return(m)
+                return(i)
         }
         data <- x$get()
-        m <- mean(data)
-        x$setmean(m)
-        m
+        i <- solve(data)
+        x$setinverse(i)
+        i
 }
 
-change_vector <- function(x, new_x) {
-        x$set(new_x)
-}
-
-a_vector = c(1,2,3)
-b = makeVector(a_vector)
-cachemean(b)
+a <- matrix(c(1,2,3,4),nrow = 2)
+b <- makeCacheMatrix(a)
+cacheSolve(b)
+cacheSolve(b)
